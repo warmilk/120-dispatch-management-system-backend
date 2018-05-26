@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.emgcy120.core.system.event.mapper.AssignCar120Mapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.emgcy120.core.system.event.entity.AssignCar120">
+		<id column="id" property="id" />
+		<result column="assign_id" property="assignId" />
+		<result column="plate_number" property="plateNumber" />
+		<result column="driver" property="driver" />
+		<result column="driver_phone" property="driverPhone" />
+		<result column="doctor" property="doctor" />
+		<result column="nurse" property="nurse" />
+		<result column="stretcher" property="stretcher" />
+		<result column="hosp_assign_time" property="hospAssignTime" />
+		<result column="dispatcher" property="dispatcher" />
+		<result column="status" property="status" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, assign_id AS assignId , plate_number AS plateNumber, driver, driver_phone AS driverPhone, doctor, nurse, stretcher, hosp_assign_time AS hospAssignTime, dispatcher, status
+    </sql>
+	<select id="eventInfoAssignListCarList" resultType="java.util.Map">
+
+		select ac.id assignCarId , ac.plate_number plateNumber , ac.driver driver , ac.driver_phone driverPhone
+			, ac.doctor doctor , ac.nurse nurse , ac.stretcher stretcher , ac.hosp_assign_time hospAssignTime
+			, ac.dispatcher dispatcher , ac.status status
+		from cr_assign_car_120 ac
+		where ac.assign_id = #{assignId}
+
+	</select>
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.emgcy120.core.system.event.mapper.CommonEmgcy120Mapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.emgcy120.core.system.event.entity.CommonEmgcy120">
+		<id column="id" property="id" />
+		<result column="patient_name" property="patientName" />
+		<result column="patient_sex" property="patientSex" />
+		<result column="patient_age" property="patientAge" />
+		<result column="patient_identity" property="patientIdentity" />
+		<result column="reporter_desc" property="reporterDesc" />
+		<result column="patient_desc" property="patientDesc" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, patient_name AS patientName, patient_sex AS patientSex, patient_age AS patientAge, patient_identity AS patientIdentity, reporter_desc AS reporterDesc, patient_desc AS patientDesc
+    </sql>
+
+</mapper>

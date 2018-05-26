@@ -1,0 +1,64 @@
+.error-404 {
+    width: 100%;
+    text-align: center;
+    font-size: 0;
+    margin-top: 15%;
+}
+
+.error-404 .img {
+    width: 50%;
+    text-align: right;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.error-404 .img img {
+    height: 10rem;
+    padding-top: 1.5rem;
+    padding-right: 4rem;
+}
+
+.error-404 .font {
+    width: 50%;
+    text-align: left;
+    display: inline-block;
+    vertical-align: top;
+    text-indent: 1.5rem;
+}
+
+.error-404 .font .title {
+    color: #32A1F7;
+    font-size: 5.6rem;
+    margin: 0;
+}
+
+.error-404 .font .title-500 {
+    color: #FD6C6E;
+    font-size: 5.6rem;
+    margin: 0;
+}
+
+.error-404 .font .title-403 {
+    color: #FEA150;
+    font-size: 5.6rem;
+    margin: 0;
+}
+
+.error-404 .font .text {
+    color: #303030;
+    font-size: 1rem;
+    margin: 0.2rem 0;
+}
+
+.error-404 .font .text-english {
+    color: #A7AEBC;
+    font-size: 0.8rem;
+    margin: 0.2rem 0;
+}
+
+.error-404 .font .back a {
+    color: #777777;
+    font-size: 0.8rem;
+    margin: 0.4rem 0;
+    text-decoration: none;
+}

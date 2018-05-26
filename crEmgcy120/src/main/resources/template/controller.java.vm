@@ -1,0 +1,96 @@
+package ${package.Controller};
+
+import org.springframework.web.bind.annotation.RequestMapping;
+	#if(${restControllerStyle})
+import org.springframework.web.bind.annotation.RestController;
+#else
+import org.springframework.stereotype.Controller;
+#end
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+#if(${superControllerClassPackage})
+import ${superControllerClassPackage};
+#end
+import ${package.Service}.${table.serviceName};
+import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import ${package.Entity}.${entity};
+import com.emgcy120.core.common.annotation.RepeatUrlData;
+
+/**
+ * <p>
+ * $!{table.comment} 前端控制器
+ * </p>
+ *
+ * @author ${author}
+ * @since ${date}
+ */
+#if(${restControllerStyle})
+@RestController
+#else
+@Controller
+#end
+@RequestMapping("#if(${package.ModuleName})/${package.ModuleName}#end/#if(${controllerMappingHyphenStyle})${controllerMappingHyphen}#else${table.entityPath}#end")
+#if(${superControllerClass})
+public class ${table.controllerName} extends ${superControllerClass} {
+#else
+public class ${table.controllerName} {
+#end
+
+	private static final Logger logger = LoggerFactory.getLogger(${table.controllerName}.class);
+	
+	@Autowired
+	private ${table.serviceName} ${table.entityPath}Service;
+	
+//	@RequiresPermissions(请填入权限编码)
+	@ApiOperation(value = "获取列表")
+	@ApiImplicitParams({ @ApiImplicitParam(name = "page", value = "页码", dataType = "Integer"),
+			@ApiImplicitParam(name = "limit", value = "页数量", dataType = "Integer") })
+	@GetMapping("/list")
+	@ResponseBody
+	public BasePageDataDTO<${entity}> list(@RequestParam(defaultValue = "1") int page,
+			@RequestParam(defaultValue = "10") int limit, ${entity} entity) {
+		Page<${entity}> currentPage = new Page<${entity}>();
+		currentPage.setCurrent(page);
+		currentPage.setSize(limit);
+		Wrapper<${entity}> wrapper = new EntityWrapper<${entity}>();
+	    wrapper.orderBy("id", false);
+	    Page<${entity}> selectPage = ${table.entityPath}Service.selectPage(currentPage, wrapper);
+		return new BasePageDataDTO<${entity}>(selectPage.getRecords(), selectPage.getTotal());
+	}
+	
+//	@RequiresPermissions(请填入权限编码)
+	@ApiOperation(value = "根据id获取信息")
+	@GetMapping("/getInfo")
+	@ResponseBody
+	public ${entity} getInfo(@RequestParam @ApiParam(name = "id", value = "id", required = true) long id) {
+		return ${table.entityPath}Service.selectById(id);
+	}
+	
+//	@RequiresPermissions(请填入权限编码)
+	@ApiOperation(value = "根据id删除信息")
+	@GetMapping("/del")
+	@ResponseBody
+	public BaseResDto del(@RequestParam @ApiParam(name = "id", value = "id", required = true) long id) {
+		${table.entityPath}Service.deleteById(id) ;
+        return BaseResDto.success() ;
+	}
+	
+//	@RequiresPermissions(请填入权限编码)
+	@PostMapping("/saveOrEdit")
+	@RepeatUrlData
+	@ApiOperation(value = "新增或修改信息")
+	@ResponseBody
+	public BaseResDto saveOrEdit(${entity} entity) {
+		${table.entityPath}Service.insertOrUpdate(entity) ;
+        return BaseResDto.success() ;
+	}
+	
+}

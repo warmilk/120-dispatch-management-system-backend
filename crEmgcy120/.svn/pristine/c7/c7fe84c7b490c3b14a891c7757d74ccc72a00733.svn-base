@@ -1,0 +1,112 @@
+##项目端口和上下文路径
+#server:
+#  port: 8080
+#  context-path: /crEmgcy120
+## tomcat的URI编码
+#  tomcat:
+#    uri-encoding: UTF-8
+#
+#spring:
+#  profiles: test
+#  resources:
+#    static-locations: classpath:/static/,classpath:/META-INF/resources/
+##    缓存7天604800s 3天259200s
+#    cache-period: 259200
+##    开启缓存
+#    chain:
+#      cache: true
+#  mvc:
+#
+#  freemarker:
+#    template-loader-path: classpath:/app/
+#    charset: UTF-8
+#    content-type: text/html
+#    cache: false
+#    request-context-attribute: request
+#    settings:
+#          numberFormat: '#'
+##    ${springMacroRequestContext.contextPath}
+## 数据库配置
+#  datasource:
+#    name: test
+#    driver-class-name: com.mysql.jdbc.Driver
+#
+#    url: jdbc:mysql://192.168.1.20:3306/cr_emgcy?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&characterSetResults=UTF-8
+#    username: root
+#    password: 123456
+#    table-schema: cr_emgcy
+#    type: com.zaxxer.hikari.HikariDataSource
+#    hikari.cachePrepStmts: true
+#    hikari.prepStmtCacheSize: 250
+#    hikari.prepStmtCacheSqlLimit: 2048
+#
+#  jackson:
+#    time-zone: Asia/Shanghai
+#    date-format: yyyy-MM-dd HH:ss:mm
+#  output:
+#    ansi:
+#      enabled: always
+#
+#  http:
+#    multipart:
+#      max-file-size: 600MB
+#      max-request-size: 600MB
+#
+##    druid连接池配置     #
+##    type: com.alibaba.druid.pool.DruidDataSource
+##    filters: stat
+##    maxActive: 20
+##    initialSize: 1
+##    maxWait: 60000
+##    minIdle: 1
+##    timeBetweenEvictionRunsMillis: 60000
+##    minEvictableIdleTimeMillis: 300000
+##    validationQuery: select 'x'
+##    testWhileIdle: true
+##    testOnBorrow: false
+##    testOnReturn: false
+##    poolPreparedStatements: true
+##    maxOpenPreparedStatements: 20
+#
+##Mybatis-Plus配置
+#mybatis-plus:
+#  mapper-locations: classpath:mybatis/**/*Mapper.xml
+#  typeAliasesPackage: com.emgcy120.core.system.*.entity
+#  global-config:
+#    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+#    id-type: 0
+#    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+#    field-strategy: 2
+#    #驼峰下划线转换
+#    db-column-underline: true
+#    #刷新mapper 调试神器
+##    refresh-mapper: true
+#    #数据库大写下划线转换
+#    #capital-mode: true
+#    #序列接口实现类配置
+#    #key-generator: com.baomidou.springboot.xxx
+#    #逻辑删除配置
+#    #logic-delete-value: 0
+#    #logic-not-delete-value: 1
+#    #自定义填充策略接口实现
+#    #meta-object-handler: com.emgcy120.core.common.mybatis.MyMetaObjectHandler
+#    #自定义SQL注入器
+#    #sql-injector: com.emgcy120.core.common.mybatis.MySqlInjector
+#  configuration:
+#    map-underscore-to-camel-case: true
+#    cache-enabled: false
+#    logPrefix: dao.
+#
+#logging:
+#  path: ./logs
+#  level: info
+#
+##  base-package: com.emgcy120.core
+#
+##项目相关配置
+##adminPath: /a
+##frontPath: /f
+#application:
+#
+#
+#

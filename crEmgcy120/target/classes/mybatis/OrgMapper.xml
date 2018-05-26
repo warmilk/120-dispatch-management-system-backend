@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.emgcy120.core.system.org.mapper.OrgMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.emgcy120.core.system.org.entity.Org">
+		<id column="id" property="id" />
+		<result column="uuid" property="uuid" />
+		<result column="parent_id" property="parentId" />
+		<result column="code" property="code" />
+		<result column="name" property="name" />
+		<result column="type" property="type" />
+		<result column="description" property="description" />
+		<result column="telephone" property="telephone" />
+		<result column="address" property="address" />
+		<result column="website" property="website" />
+		<result column="logo" property="logo" />
+		<result column="level" property="level" />
+		<result column="hospital_type" property="hospitalType" />
+		<result column="longitude" property="longitude" />
+		<result column="latitude" property="latitude" />
+		<result column="order_num" property="orderNum" />
+		<result column="create_by" property="createBy" />
+		<result column="create_time" property="createTime" />
+		<result column="update_by" property="updateBy" />
+		<result column="update_time" property="updateTime" />
+		<result column="del_flag" property="delFlag" />
+		<result column="remark" property="remark" />
+	</resultMap>
+
+	<resultMap id="BaseHospBeanMap" type="com.emgcy120.core.system.org.web.dto.BaseHospBean">
+		<result column="id" property="id" />
+		<result column="hospName" property="hospName" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, uuid, parent_id AS parentId, code, name, type, description, telephone, address, website, logo, level, hospital_type AS hospitalType, longitude, latitude, order_num AS orderNum, create_by AS createBy, create_time AS createTime, update_by AS updateBy, update_time AS updateTime, del_flag AS delFlag, remark
+    </sql>
+    <select id="hospList" resultMap="BaseHospBeanMap">
+
+		select id , name hospName
+		from sys_org
+		where parent_id = 0
+
+	</select>
+
+</mapper>

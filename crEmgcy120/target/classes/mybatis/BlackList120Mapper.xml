@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.emgcy120.core.system.call.mapper.BlackList120Mapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.emgcy120.core.system.call.entity.BlackList120">
+		<id column="id" property="id" />
+		<result column="phone_id" property="phoneId" />
+		<result column="user_id" property="userId" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+	<resultMap id="BlackListBeanMap" type="com.emgcy120.core.system.call.web.dto.BlackListBean">
+		<result column="blackListId" property="blackListId" />
+		<result column="employeeId" property="employeeId" />
+		<result column="phoneNumber" property="phoneNumber" />
+		<result column="callCount" property="callCount" />
+		<result column="lastTime" property="lastTime" />
+		<result column="ascription" property="ascription" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, phone_id AS phoneId,user_id AS userId ,create_time AS createTime
+    </sql>
+    <select id="countMulti" resultType="java.lang.Integer">
+
+		select count(1)
+		from cr_black_list_120 bl
+			left join cr_phone_120 p on bl.phone_id=p.id
+			left join sys_user_120 u on bl.user_id=u.id
+		<where>
+			${ew.sqlSegment}
+		</where>
+
+	</select>
+	<select id="selectMultiInPage" resultMap="BlackListBeanMap">
+
+		select bl.id blackListId , u.employee_id employeeId ,p.number phoneNumber , p.call_count callCount ,
+			p.last_time lastTime , p.ascription ascription
+		from cr_black_list_120 bl
+		left join cr_phone_120 p on bl.phone_id=p.id
+		left join sys_user_120 u on bl.user_id=u.id
+		<where>
+			${ew.sqlSegment}
+		</where>
+
+	</select>
+
+</mapper>

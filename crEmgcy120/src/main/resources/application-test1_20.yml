@@ -1,0 +1,79 @@
+#项目端口和上下文路径
+server:
+  port: 9090
+  context-path: /crEmgcy120
+# tomcat的URI编码
+  tomcat:
+    uri-encoding: UTF-8
+
+    
+# 数据库配置
+spring:
+  profiles: dev
+  resources:
+    static-locations: classpath:/static/,classpath:/META-INF/resources/
+    cache-period: 60
+    chain:
+      cache: false
+  mvc:
+  freemarker:
+    template-loader-path: classpath:/app/
+    charset: UTF-8
+    content-type: text/html
+    cache: false
+    request-context-attribute: request
+    settings:
+      numberFormat: '#'
+#    ${springMacroRequestContext.contextPath}
+
+  datasource:
+    name: dev
+    driver-class-name: com.mysql.jdbc.Driver
+    
+    url: jdbc:mysql://localhost:3306/cr_emgcy?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&characterSetResults=UTF-8&useSSL=false
+#    url: jdbc:mysql://127.0.0.1:3306/cr_emgcy?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull&characterSetResults=UTF-8
+
+    username: root
+    password: mysql
+    
+    table-schema: cr_emgcy
+    #type: com.zaxxer.hikari.HikariDataSource
+    #hikari.cachePrepStmts: true
+    #hikari.prepStmtCacheSize: 250
+    #hikari.prepStmtCacheSqlLimit: 2048
+
+  jackson:
+    time-zone: Asia/Shanghai
+    date-format: yyyy-MM-dd HH:ss:mm
+  output:
+    ansi:
+      enabled: detect
+
+  http:
+    multipart:
+      max-file-size: 1600MB
+      max-request-size: 1600MB
+
+#mybatis-plus
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    logPrefix: dao.
+
+logging:
+  level: info
+  path: ./logs
+
+#项目相关配置
+#adminPath: /a
+#frontPath: /f
+application:
+  crEmgcyBaseUrl: localhost:8120/crEmgcy
+  #上传文件的路径，文件存储在本地的绝对路径
+  resourceRootPath: /Users/weijieliao/temp/crEmgcyFile
+  #下载文件的host地址
+  hostURI: http://localhost:9080
+
+
+

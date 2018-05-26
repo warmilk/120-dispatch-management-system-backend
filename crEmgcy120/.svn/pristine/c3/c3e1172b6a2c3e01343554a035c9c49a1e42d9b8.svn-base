@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.emgcy120.core.system.event.mapper.Event120Mapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.emgcy120.core.system.event.entity.Event120">
+		<id column="id" property="id" />
+		<result column="reporter" property="reporter" />
+		<result column="phone" property="phone" />
+		<result column="event_type" property="eventType" />
+		<result column="region" property="region" />
+		<result column="place" property="place" />
+		<result column="rescue_type" property="rescueType" />
+		<result column="level" property="level" />
+		<result column="operator_id" property="operatorId" />
+		<result column="patient_name" property="patientName" />
+		<result column="patient_sex" property="patientSex" />
+		<result column="patient_age" property="patientAge" />
+		<result column="patient_identity" property="patientIdentity" />
+		<result column="reporter_desc" property="reporterDesc" />
+		<result column="patient_desc" property="patientDesc" />
+		<result column="accident_level" property="accidentLevel" />
+		<result column="accident_type" property="accidentType" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+	<resultMap id="EventListItemMap" type="com.emgcy120.core.system.event.web.dto.EventListItemBean">
+		<result column="eventId" property="eventId" />
+		<result column="operator" property="operator" />
+		<result column="reportPhone" property="reportPhone" />
+		<result column="reporter" property="reporter" />
+		<result column="receiveStartTime" property="receiveStartTime" />
+		<result column="receiveEndTime" property="receiveEndTime" />
+		<result column="patientIdentity" property="patientIdentity" />
+		<result column="eventType" property="eventType" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, reporter, phone, event_type AS eventType, place, rescue_type AS rescueType, level,
+        operator_id AS operatorId , patient_name AS patientName,
+        patient_sex AS patientSex, patient_age AS patientAge, patient_identity AS patientIdentity,
+        reporter_desc AS reporterDesc, patient_desc AS patientDesc,accident_level AS accidentLevel,
+        accident_type AS accidentType,create_time AS createTime
+    </sql>
+
+	<select id="countMulti" resultType="java.lang.Integer">
+
+		select count(1)
+		from
+		(
+			select e.id
+			from cr_event_120 e
+			left join cr_receive_120 r on e.id = r.event_id
+			left join cr_assign_120 a on e.id = a.event_id
+			left join sys_user_120 u120 on e.operator_id = u120.id
+			left join sys_org o on a.hosp_id = o.id
+			left join sys_user u on a.receiver_id = u.id
+			<where>
+				${ew.sqlSegment}
+			</where>
+		) a
+
+	</select>
+	<select id="selectMultiInPage" resultMap="EventListItemMap">
+
+		select e.id eventId , u120.name operator , e.phone reportPhone , e.reporter reporter
+			, r.start_time receiveStartTime , r.end_time receiveEndTime , e.patient_identity patientIdentity
+			, e.event_type eventType
+		from cr_event_120 e
+			left join cr_receive_120 r on e.id = r.event_id
+			left join cr_assign_120 a on e.id = a.event_id
+			left join sys_user_120 u120 on e.operator_id = u120.id
+			left join sys_org o on a.hosp_id = o.id
+			left join sys_user u on a.receiver_id = u.id
+		<where>
+			${ew.sqlSegment}
+		</where>
+
+	</select>
+    <select id="baseInfo" resultType="java.util.Map">
+
+		select e.id eventId , e.event_type eventType , e.level level
+			, date_format( e.create_time , '%Y-%m-%d %H:%i:%S') time , e.patient_name patientName
+			, e.patient_sex patientSex , e.patient_age patientAge , e.patient_identity patientIdentity
+			, e.reporter reporter , e.phone reporterPhone , e.place place , e.reporter_desc patientDesc
+			, e.patient_desc reporterDesc
+		from cr_event_120 e
+		where e.id = #{eventId}
+
+	</select>
+	<!--普通事件统计-->
+    <select id="commonEventCount" resultType="java.util.Map">
+		select di.dict_item_value region , count( e.id ) eventCount
+		from cr_event_120 e left join cr_dict_item di on e.region = di.id
+		where e.create_time between #{ startTime } and #{ endTime }
+		group by e.region
+	</select>
+	<!--事故类型统计-->
+    <select id="accidentTypeProportionCount" resultType="java.util.Map">
+		select di.dict_item_value accidentType , count( e.id ) eventCount
+		from cr_event_120 e left join cr_dict_item di on e.accident_type = di.id
+		where e.create_time between #{ startTime } and #{ endTime }
+		group by e.accident_type
+	</select>
+
+</mapper>

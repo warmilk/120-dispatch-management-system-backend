@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.emgcy120.core.system.staff.mapper.UserMapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.emgcy120.core.system.staff.entity.User">
+		<id column="id" property="id" />
+		<result column="uuid" property="uuid" />
+		<result column="org_hospital_id" property="orgHospitalId" />
+		<result column="org_dept_id" property="orgDeptId" />
+		<result column="employee_id" property="employeeId" />
+		<result column="name" property="name" />
+		<result column="user_name" property="userName" />
+		<result column="sign_password" property="signPassword" />
+		<result column="password" property="password" />
+		<result column="salt" property="salt" />
+		<result column="sex" property="sex" />
+		<result column="birthday" property="birthday" />
+		<result column="phone" property="phone" />
+		<result column="id_card" property="idCard" />
+		<result column="email" property="email" />
+		<result column="address" property="address" />
+		<result column="photo" property="photo" />
+		<result column="signature" property="signature" />
+		<result column="job_title" property="jobTitle" />
+		<result column="position" property="position" />
+		<result column="user_type" property="userType" />
+		<result column="major" property="major" />
+		<result column="summary" property="summary" />
+		<result column="status" property="status" />
+		<result column="register_time" property="registerTime" />
+		<result column="login_time" property="loginTime" />
+		<result column="login_ip" property="loginIp" />
+		<result column="online" property="online" />
+		<result column="expert" property="expert" />
+		<result column="create_by" property="createBy" />
+		<result column="create_time" property="createTime" />
+		<result column="update_by" property="updateBy" />
+		<result column="update_time" property="updateTime" />
+	</resultMap>
+
+	<!--<resultMap id="StaffListItemBeanMap" type="com.emgcy120.core.system.staff.web.dto.StaffListItemBean">-->
+		<!--<result column="id" property="id" />-->
+		<!--<result column="employeeId" property="employeeId" />-->
+		<!--<result column="employeeName" property="employeeName" />-->
+		<!--<result column="sex" property="sex" />-->
+		<!--<result column="jobTitle" property="jobTitle" />-->
+		<!--<result column="position" property="position" />-->
+		<!--<result column="phone" property="phone" />-->
+		<!--<result column="department" property="department" />-->
+	<!--</resultMap>-->
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, uuid, org_hospital_id AS orgHospitalId, org_dept_id AS orgDeptId, employee_id AS employeeId, name, user_name AS userName, sign_password AS signPassword, password, salt, sex, birthday, phone, id_card AS idCard, email, address, photo, signature, job_title AS jobTitle, position, user_type AS userType, major, summary, status, register_time AS registerTime, login_time AS loginTime, login_ip AS loginIp, online, expert, create_by AS createBy, create_time AS createTime, update_by AS updateBy, update_time AS updateTime
+    </sql>
+    <select id="countMulti" resultType="java.lang.Integer">
+
+		select count(1)
+		from sys_user u
+			left join sys_org o on o.id = u.org_dept_id
+		<where>
+			${ew.sqlSegment}
+		</where>
+
+	</select>
+	<select id="selectMultiInPage" resultType="com.emgcy120.core.system.staff.web.dto.StaffListItemBean">
+
+		select u.id id , u.name employeeName , u.employee_id employeeId , u.sex sex , u.job_title jobTitle
+			, u.position position , u.phone phone , o.name department
+		from sys_user u
+			left join sys_org o on o.id = u.org_dept_id
+		<where>
+			${ew.sqlSegment}
+		</where>
+
+	</select>
+
+</mapper>

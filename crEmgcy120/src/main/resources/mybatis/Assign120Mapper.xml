@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.emgcy120.core.system.event.mapper.Assign120Mapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.emgcy120.core.system.event.entity.Assign120">
+		<id column="id" property="id" />
+		<result column="event_id" property="eventId" />
+		<result column="hosp_id" property="hospId" />
+		<result column="car_num" property="carNum" />
+		<result column="receive_status" property="receiveStatus" />
+		<result column="execute_status" property="executeStatus" />
+		<result column="receiver_id" property="receiverId" />
+		<result column="assign_start_time" property="assignStartTime" />
+		<result column="assign_res_time" property="assignResTime" />
+		<result column="assign_cancel_time" property="assignCancelTime" />
+		<result column="assign_car_time" property="assignCarTime" />
+		<result column="assign_arrive_time" property="assignArriveTime" />
+		<result column="assign_stop_time" property="assignStopTime" />
+		<result column="assign_finish_time" property="assignFinishTime" />
+	</resultMap>
+	<resultMap id="EventListAssignBeanMap" type="com.emgcy120.core.system.event.web.dto.EventListAssignBean">
+		<result column="hospital" property="hospital" />
+		<result column="receiveStatus" property="receiveStatus" />
+		<result column="receiver" property="receiver" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, event_id AS eventId,
+        hosp_id AS hospId,
+        car_num AS carNum,
+        receive_status AS receiveStatus,
+        execute_status AS executeStatus,
+        receiver_id AS receiverId ,
+        assign_start_time AS assignStartTime ,
+        assign_res_time AS assignResTime ,
+        assign_cancel_time AS assignCancelTime ,
+        assign_car_time AS assignCarTime ,
+        assign_arrive_time AS assignArriveTime ,
+        assign_stop_time AS assignStopTime ,
+        assign_finish_time AS assignFinishTime
+    </sql>
+    <select id="selectEventListAssignBeanList" resultMap="EventListAssignBeanMap">
+		select o.name hospital , a.receive_status receiveStatus , u.name receiver
+		from cr_assign_120 a
+			left join sys_org o on a.hosp_id = o.id
+			left join sys_user u on a.receiver_id = u.id
+		<where>
+			${ew.sqlSegment}
+		</where>
+	</select>
+    <select id="eventInfoAssignList" resultType="java.util.Map">
+
+		select a.id assignId , o.name hospName , a.assign_res_time receiveTime , a.receive_status receiveStatus
+		from cr_assign_120 a
+			left join sys_org o on a.hosp_id = o.id
+		where a.event_id = #{eventId} and a.receive_status not in ( 3 , 4 )
+
+	</select>
+	<!--平均处置时长-->
+    <select id="avgTime" resultType="java.lang.Integer">
+		select avg( assign_finish_time - assign_start_time )
+		from cr_assign_120
+		<where>
+			${ ew.sqlSegment }
+		</where>
+	</select>
+	<!--&lt;!&ndash;有派单的事件数量&ndash;&gt;-->
+	<!--<select id="assignCount" resultType="java.lang.Integer">-->
+		<!--select count( distinct a.event_id )-->
+		<!--from cr_assign_120 a left on cr_event_120 e on a.event_id = e.id-->
+		<!--where e.event_type = 1 and a.receive_status != 1-->
+			<!--and e.create_time between #{ startTime } and #{ endTime }-->
+	<!--</select>-->
+	<!--有效派车的事件数量-->
+	<select id="assignCarCount" resultType="java.lang.Integer">
+		select count( distinct a.event_id )
+		from cr_assign_120 a left on cr_event_120 e on a.event_id = e.id
+		where e.event_type = 1 and a.assign_car_time not null
+			and e.create_time between #{ startTime } and #{ endTime }
+	</select>
+	<!--现场处置的事件数量-->
+	<select id="assignFinishCount" resultType="java.lang.Integer">
+		select count( distinct a.event_id )
+		from cr_assign_120 a left on cr_event_120 e on a.event_id = e.id
+		where e.event_type = 1 and a.execute_status = 4
+			and e.create_time between #{ startTime } and #{ endTime }
+	</select>
+	<!--响应时间统计（按日）-->
+	<select id="responseTimeCountDays" resultType="java.util.Map">
+		select date_format( assign_start_time , '%Y-%m-%d' ) time ,
+		 	avg( assign_res_time - assign_start_time ) assignTime ,
+		 	avg( assign_car_time - assign_start_time ) assignCarTime ,
+		 	avg( assign_arrive_time - assign_start_time ) arriveTime
+		from cr_assign_120
+		where assign_start_time between #{ startTime } and #{ endTime }
+		group by time
+	</select>
+	<!--响应时间统计（按周）-->
+	<select id="responseTimeCountWeeks" resultType="java.util.Map">
+		select date_format( assign_start_time , '%X年第%V周' ) time ,
+		 	avg( assign_res_time - assign_start_time ) assignTime ,
+		 	avg( assign_car_time - assign_start_time ) assignCarTime ,
+		 	avg( assign_arrive_time - assign_start_time ) arriveTime
+		from cr_assign_120
+		where assign_start_time between #{ startTime } and #{ endTime }
+		group by time
+	</select>
+	<!--响应时间统计（按月）-->
+	<select id="responseTimeCountMonths" resultType="java.util.Map">
+		select date_format( assign_start_time , '%Y-%m' ) time ,
+		 	avg( assign_res_time - assign_start_time ) assignTime ,
+		 	avg( assign_car_time - assign_start_time ) assignCarTime ,
+		 	avg( assign_arrive_time - assign_start_time ) arriveTime
+		from cr_assign_120
+		where assign_start_time between #{ startTime } and #{ endTime }
+		group by time
+	</select>
+
+</mapper>

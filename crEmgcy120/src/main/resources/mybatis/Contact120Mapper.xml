@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.emgcy120.core.system.call.mapper.Contact120Mapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.emgcy120.core.system.call.entity.Contact120">
+		<id column="id" property="id" />
+		<result column="phone_id" property="phoneId" />
+		<result column="org_name" property="orgName" />
+		<result column="remark_name" property="remarkName" />
+		<result column="create_time" property="createTime" />
+	</resultMap>
+
+	<resultMap id="ContactBeanMap" type="com.emgcy120.core.system.call.web.dto.ContactBean">
+		<result column="contactId" property="contactId" />
+		<result column="orgName" property="orgName" />
+		<result column="remarkName" property="remarkName" />
+		<result column="phoneNumber" property="phoneNumber" />
+		<result column="createTime" property="createTime" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, phone_id AS phoneId, user_id AS userId, org_name AS orgName,remark_name AS remarkName,
+         last_time AS lastTime, create_time AS createTime
+    </sql>
+    <select id="selectMulti" resultMap="ContactBeanMap">
+
+		select c.id contactId , c.org_name orgName , c.remark_name remarkName , p.number phoneNumber ,
+			c.create_time createTime
+		from cr_contact_120 c left join cr_phone_120 p on c.phone_id=p.id
+		<where>
+			${ew.sqlSegment}
+		</where>
+
+	</select>
+
+</mapper>

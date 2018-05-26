@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.emgcy120.core.system.call.mapper.CallRecord120Mapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.emgcy120.core.system.call.entity.CallRecord120">
+		<id column="id" property="id" />
+		<result column="phone_id" property="phoneId" />
+		<result column="user_id" property="userId" />
+		<result column="call_type" property="callType" />
+		<result column="call_time" property="callTime" />
+		<result column="connect_time" property="connectTime" />
+		<result column="end_time" property="endTime" />
+		<result column="talk_time" property="talkTime" />
+		<result column="had_connected" property="hadConnected" />
+		<result column="bell_count" property="bellCount" />
+	</resultMap>
+
+	<resultMap id="CallRecordBeanMap" type="com.emgcy120.core.system.call.web.dto.CallRecordBean">
+		<result column="callRecordId" property="callRecordId" />
+		<result column="phoneNumber" property="phoneNumber" />
+		<result column="ascription" property="ascription" />
+		<result column="hadConnected" property="hadConnected" />
+		<result column="talkTime" property="talkTime" />
+		<result column="callTime" property="callTime" />
+		<result column="connectTime" property="connectTime" />
+		<result column="endTime" property="endTime" />
+		<result column="remarkName" property="remarkName" />
+		<result column="employeeId" property="employeeId" />
+		<result column="bellCount" property="bellCount" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, phone_id AS phoneId, user_id AS userId, call_type AS callType, call_time AS callTime, connect_time AS connectTime, end_time AS endTime, talk_time AS talkTime, had_connected AS hadConnected, bell_count AS bellCount
+    </sql>
+
+	<select id="selectMulti" resultMap="CallRecordBeanMap">
+
+		select cr.id callRecordId , p.number phoneNumber , p.ascription ascription ,
+		if( had_connected = 1 , true , false ) hadConnected , cr.talk_time talkTime ,
+		cr.call_time callTime , cr.connect_time connectTime , cr.end_time endTime ,
+		c.remark_name remarkName , u.employee_id employeeId , cr.bell_count bellCount
+		from cr_call_record_120 cr
+		left join cr_phone_120 p on cr.phone_id=p.id
+		left join cr_contact_120 c on cr.phone_id=c.phone_id
+		left join sys_user_120 u on cr.user_id=u.id
+		<where>
+			${ew.sqlSegment}
+		</where>
+
+	</select>
+
+	<select id="selectMultiInPage" resultMap="CallRecordBeanMap">
+
+		select cr.id callRecordId , p.number phoneNumber , p.ascription ascription ,
+			if( had_connected = 1 , true , false ) hadConnected , cr.talk_time talkTime ,
+			cr.call_time callTime , cr.connect_time connectTime , cr.end_time endTime ,
+			c.remark_name remarkName , u.employee_id employeeId , cr.bell_count bellCount
+		from cr_call_record_120 cr
+			left join cr_phone_120 p on cr.phone_id=p.id
+			left join cr_contact_120 c on cr.phone_id=c.phone_id
+			left join sys_user_120 u on cr.user_id=u.id
+  		<where>
+  			${ew.sqlSegment}
+  		</where>
+
+	</select>
+
+</mapper>

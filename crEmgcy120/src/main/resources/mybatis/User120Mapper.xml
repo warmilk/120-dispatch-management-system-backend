@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.emgcy120.core.system.sys.mapper.User120Mapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.emgcy120.core.system.sys.entity.User120">
+		<id column="id" property="id" />
+		<result column="uuid" property="uuid" />
+		<result column="employee_id" property="employeeId" />
+		<result column="name" property="name" />
+		<result column="username" property="username" />
+		<result column="password" property="password" />
+		<result column="salt" property="salt" />
+		<result column="sex" property="sex" />
+		<result column="birthday" property="birthday" />
+		<result column="phone" property="phone" />
+		<result column="id_card" property="idCard" />
+		<result column="email" property="email" />
+		<result column="address" property="address" />
+		<result column="photo" property="photo" />
+		<result column="signature" property="signature" />
+		<result column="job_title" property="jobTitle" />
+		<result column="user_type" property="userType" />
+		<result column="status" property="status" />
+		<result column="register_time" property="registerTime" />
+		<result column="login_time" property="loginTime" />
+		<result column="login_ip" property="loginIp" />
+		<result column="online" property="online" />
+		<result column="initial_pwd" property="initialPwd" />
+		<result column="creator" property="creator" />
+		<result column="create_time" property="createTime" />
+		<result column="modifier" property="modifier" />
+		<result column="modify_time" property="modifyTime" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, uuid, employee_id AS employeeId, name, username, password, salt, sex, birthday, phone, id_card AS idCard,
+        email, address, photo, signature, job_title AS jobTitle, user_type AS userType, status,
+        register_time AS registerTime, login_time AS loginTime, login_ip AS loginIp, online, initial_pwd AS initialPwd,
+        creator, create_time AS createTime, modifier, modify_time AS modifyTime
+    </sql>
+    <select id="getRoles" resultType="java.lang.String">
+		select sr.role_name
+		from sys_user_role_120 sur
+			left join sys_role_120 sr on sur.role_id = sr.id
+		where sur.user_id = #{userId}
+	</select>
+
+</mapper>

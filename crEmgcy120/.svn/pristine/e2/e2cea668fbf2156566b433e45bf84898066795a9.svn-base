@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.emgcy120.core.system.event.mapper.EventOperationLog120Mapper">
+
+	<!-- 通用查询映射结果 -->
+	<resultMap id="BaseResultMap" type="com.emgcy120.core.system.event.entity.EventOperationLog120">
+		<id column="id" property="id" />
+		<result column="event_id" property="eventId" />
+		<result column="ope_time" property="opeTime" />
+		<result column="operator" property="operator" />
+		<result column="ope_type" property="opeType" />
+		<result column="remark" property="remark" />
+	</resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, event_id AS eventId, ope_time AS opeTime, operator, ope_type AS opeType, remark
+    </sql>
+	<select id="eventInfoOpeLogList" resultType="java.util.Map">
+
+		select eol.id eventOpeLogId , eol.ope_time opeTime , eol.operator operator , di.dict_item_value opeType
+			, eol.remark remark
+		from cr_event_operation_log_120 eol
+			left join cr_dict_item di on di.id = eol.ope_type
+		where eol.event_id = #{eventId}
+
+	</select>
+
+</mapper>
